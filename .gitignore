@@ -34,4 +34,4 @@ Thumbs.db
 .vscode/
 .idea/
 
-app.py
+./app.py
