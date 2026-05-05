@@ -598,6 +598,7 @@ def initialize_state() -> None:
         "raw_markdown": "",
         "filename": "",
         "font_size": 100,
+        "last_uploaded_filename": "",
     }
     for key, value in defaults.items():
         st.session_state.setdefault(key, value)
@@ -654,8 +655,12 @@ def render_upload_panel() -> None:
         key="markdown_upload",
     )
     if uploaded is not None:
-        st.session_state.raw_markdown = uploaded.getvalue().decode("utf-8", errors="replace")
-        st.session_state.filename = uploaded.name
+        # 只在上傳新檔案時更新並重新運行
+        if uploaded.name != st.session_state.last_uploaded_filename:
+            st.session_state.raw_markdown = uploaded.getvalue().decode("utf-8", errors="replace")
+            st.session_state.filename = uploaded.name
+            st.session_state.last_uploaded_filename = uploaded.name
+            st.rerun()
 
 
 def render_file_info(data: dict | None) -> None:
