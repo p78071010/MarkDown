@@ -2,10 +2,18 @@
 # 本機執行: streamlit run MDReader.py
 
 import re
+import sys
+import asyncio
 from html import escape
 
 import markdown as md_lib
 import streamlit as st
+
+if sys.platform == "win32":
+    try:
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    except Exception:
+        pass
 
 st.set_page_config(
     page_title="Markdown Reader",
@@ -81,6 +89,7 @@ def inject_styles(theme: str) -> None:
 }}
 
 #MainMenu, footer, [data-testid="stToolbar"], [data-testid="stHeader"], .stAppDeployButton,
+.stAppHeader, .stAppToolbar, .stDecoration,
 [data-testid="stSidebar"], [data-testid="stSidebarNav"],
 [data-testid="stSidebarCollapsedControl"] {{
     display: none !important;
@@ -101,7 +110,16 @@ html, body, [class*="css"] {{
     height: 0 !important;
 }}
 
+.stAppHeader {{
+    background: transparent !important;
+    height: 0 !important;
+}}
+
 [data-testid="stAppViewContainer"] > .main {{
+    padding-top: 0 !important;
+}}
+
+.stMainBlockContainer {{
     padding-top: 0 !important;
 }}
 
