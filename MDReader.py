@@ -640,7 +640,7 @@ def render_header(data: dict | None) -> None:
                 st.session_state.font_size = min(150, st.session_state.font_size + 10)
                 st.rerun()
     with theme_col:
-        theme_icon = "☀" if st.session_state.theme == "dark" else "☾"
+        theme_icon = "☀︎" if st.session_state.theme == "dark" else "☾︎"
         if st.button(theme_icon, key="theme_toggle", help="切換深淺主題", use_container_width=True):
             st.session_state.theme = "light" if st.session_state.theme == "dark" else "dark"
             st.rerun()
