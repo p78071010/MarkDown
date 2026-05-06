@@ -4,7 +4,7 @@
 import re
 import sys
 import asyncio
-from html import escape
+from html import escape, unescape
 
 import markdown as md_lib
 import streamlit as st
@@ -488,6 +488,30 @@ div.stButton > button:focus:not(:active) {{
     letter-spacing: 0.08em;
 }}
 
+.md-content li:has(input[type="checkbox"]) {{
+    list-style: none;
+    margin-left: -1.8em;
+}}
+
+.md-content input[type="checkbox"] {{
+    margin-right: 0.5em;
+    accent-color: var(--accent);
+    cursor: pointer;
+    vertical-align: middle;
+}}
+
+.md-content del {{
+    color: var(--text-dimmer);
+    text-decoration-color: var(--text-dim);
+}}
+
+.md-content mark {{
+    background: rgba(201, 168, 76, 0.28);
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 3px;
+}}
+
 .md-content hr {{
     border: none;
     border-top: 1px solid var(--border);
@@ -547,6 +571,132 @@ div.stButton > button:focus:not(:active) {{
     color: var(--accent);
 }}
 
+.md-content img, .md-content .embed-img {{
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 1em 0;
+    display: block;
+}}
+
+.md-content .wikilink {{
+    color: var(--accent);
+    border-bottom: 1px dashed var(--accent2);
+    cursor: default;
+    font-style: italic;
+}}
+
+.md-content .embed-ref {{
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82em;
+    color: var(--text-dim);
+}}
+
+.md-content .callout {{
+    border-radius: 4px;
+    margin: 1.2em 0;
+    overflow: hidden;
+    border-left: 3px solid;
+}}
+
+.md-content .callout-title {{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8em;
+    font-weight: 500;
+    padding: 7px 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}}
+
+.md-content .callout-body {{
+    padding: 8px 16px 10px;
+}}
+
+.md-content .callout-body p:first-child {{ margin-top: 0.3em; }}
+.md-content .callout-body p:last-child {{ margin-bottom: 0; }}
+
+.md-content .callout-info {{ border-color: #4a9eff; background: rgba(74,158,255,0.05); }}
+.md-content .callout-info .callout-title {{ background: rgba(74,158,255,0.12); color: #4a9eff; }}
+.md-content .callout-success {{ border-color: #4caf6a; background: rgba(76,175,106,0.05); }}
+.md-content .callout-success .callout-title {{ background: rgba(76,175,106,0.12); color: #4caf6a; }}
+.md-content .callout-warning {{ border-color: #e8a83c; background: rgba(232,168,60,0.05); }}
+.md-content .callout-warning .callout-title {{ background: rgba(232,168,60,0.12); color: #e8a83c; }}
+.md-content .callout-danger {{ border-color: #e85c4a; background: rgba(232,92,74,0.05); }}
+.md-content .callout-danger .callout-title {{ background: rgba(232,92,74,0.12); color: #e85c4a; }}
+.md-content .callout-example {{ border-color: #a67ee8; background: rgba(166,126,232,0.05); }}
+.md-content .callout-example .callout-title {{ background: rgba(166,126,232,0.12); color: #a67ee8; }}
+.md-content .callout-quote {{ border-color: var(--text-dimmer); background: rgba(128,128,128,0.05); }}
+.md-content .callout-quote .callout-title {{ background: rgba(128,128,128,0.10); color: var(--text-dim); }}
+
+.md-content .container {{
+    border-radius: 4px;
+    margin: 1.2em 0;
+    padding: 10px 16px;
+    border-left: 3px solid;
+}}
+
+.md-content .container-title {{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.4em;
+}}
+
+.md-content .container-info {{ border-color: #4a9eff; background: rgba(74,158,255,0.05); }}
+.md-content .container-info .container-title {{ color: #4a9eff; }}
+.md-content .container-success {{ border-color: #4caf6a; background: rgba(76,175,106,0.05); }}
+.md-content .container-success .container-title {{ color: #4caf6a; }}
+.md-content .container-warning {{ border-color: #e8a83c; background: rgba(232,168,60,0.05); }}
+.md-content .container-warning .container-title {{ color: #e8a83c; }}
+.md-content .container-danger {{ border-color: #e85c4a; background: rgba(232,92,74,0.05); }}
+.md-content .container-danger .container-title {{ color: #e85c4a; }}
+
+.md-content .container-spoiler {{
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--text-dimmer);
+    background: var(--surface2);
+    border-radius: 4px;
+    padding: 8px 14px;
+}}
+
+.md-content .container-spoiler summary {{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    cursor: pointer;
+    color: var(--text-dim);
+    padding: 4px 0;
+    user-select: none;
+}}
+
+.md-content .container-spoiler summary:hover {{ color: var(--accent); }}
+
+.md-content .mermaid {{
+    text-align: center;
+    margin: 1.2em 0;
+    overflow-x: auto;
+}}
+
+.md-content sup, .md-content sub {{
+    font-size: 0.72em;
+    font-family: 'JetBrains Mono', monospace;
+}}
+
+.md-content .footnote {{
+    border-top: 1px solid var(--border);
+    margin-top: 2em;
+    padding-top: 0.8em;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82em;
+    color: var(--text-dim);
+}}
+
 @media (max-width: 900px) {{
     .block-container {{
         padding: 1rem !important;
@@ -571,16 +721,113 @@ div.stButton > button:focus:not(:active) {{
     )
 
 
+IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp', '.bmp'}
+
+CALLOUT_TYPES = {
+    'note': ('info', 'NOTE'), 'info': ('info', 'INFO'), 'abstract': ('info', 'ABSTRACT'),
+    'summary': ('info', 'SUMMARY'), 'tldr': ('info', 'TL;DR'), 'todo': ('info', 'TODO'),
+    'tip': ('success', 'TIP'), 'hint': ('success', 'HINT'), 'important': ('success', 'IMPORTANT'),
+    'success': ('success', 'SUCCESS'), 'check': ('success', 'CHECK'), 'done': ('success', 'DONE'),
+    'question': ('warning', 'QUESTION'), 'help': ('warning', 'HELP'), 'faq': ('warning', 'FAQ'),
+    'warning': ('warning', 'WARNING'), 'caution': ('warning', 'CAUTION'), 'attention': ('warning', 'ATTENTION'),
+    'failure': ('danger', 'FAILURE'), 'fail': ('danger', 'FAIL'), 'missing': ('danger', 'MISSING'),
+    'danger': ('danger', 'DANGER'), 'error': ('danger', 'ERROR'), 'bug': ('danger', 'BUG'),
+    'example': ('example', 'EXAMPLE'),
+    'quote': ('quote', 'QUOTE'), 'cite': ('quote', 'CITE'),
+}
+
+
+def _replace_embed(m: re.Match) -> str:
+    ref = re.sub(r'\|.*$', '', m.group(1)).strip()
+    ext = re.search(r'\.(\w+)$', ref)
+    if ext and f'.{ext.group(1).lower()}' in IMAGE_EXTS:
+        return f'<img src="{escape(ref)}" alt="{escape(ref)}" class="embed-img">'
+    return f'<span class="embed-ref">📎 {escape(ref)}</span>'
+
+
+def _replace_wikilink(m: re.Match) -> str:
+    page = m.group(1).strip()
+    section = m.group(2).strip() if m.group(2) else ''
+    alias = m.group(3).strip() if m.group(3) else ''
+    if alias:
+        display = alias
+    elif section:
+        display = f'{page} § {section}'
+    else:
+        display = page
+    return f'<span class="wikilink" title="{escape(page)}">{escape(display)}</span>'
+
+
+def postprocess_callouts(html: str) -> str:
+    def _replace(m: re.Match) -> str:
+        inner = m.group(1)
+        tm = re.match(r'\s*<p>\[!(\w+)\]([^\n<]*)', inner, re.IGNORECASE)
+        if not tm:
+            return m.group(0)
+        ctype = tm.group(1).lower()
+        if ctype not in CALLOUT_TYPES:
+            return m.group(0)
+        cat, default_title = CALLOUT_TYPES[ctype]
+        title = tm.group(2).strip() or default_title
+        content = re.sub(r'<p>\[!\w+\][^\n<]*(<br\s*/?>)?\s*', '<p>', inner, count=1, flags=re.IGNORECASE)
+        return (
+            f'<div class="callout callout-{cat}">'
+            f'<div class="callout-title">{escape(title)}</div>'
+            f'<div class="callout-body">{content.strip()}</div>'
+            f'</div>'
+        )
+    return re.sub(r'<blockquote>(.*?)</blockquote>', _replace, html, flags=re.DOTALL)
+
+
+def preprocess_containers(raw: str) -> str:
+    def _replace(m: re.Match) -> str:
+        ctype = m.group(1).lower()
+        title = m.group(2).strip() if m.group(2) else ''
+        content = m.group(3)
+        if ctype == 'spoiler':
+            summary = escape(title) if title else 'Details'
+            return (
+                f'<details class="container container-spoiler" markdown="1">\n'
+                f'<summary>{summary}</summary>\n\n{content}\n\n</details>'
+            )
+        title_html = f'<div class="container-title" markdown="0">{escape(title)}</div>\n' if title else ''
+        return f'<div class="container container-{ctype}" markdown="1">\n{title_html}{content}\n</div>'
+    return re.sub(
+        r'^:::(info|success|warning|danger|spoiler)([ \t][^\n]*)?\n(.*?)\n^:::[ \t]*$',
+        _replace, raw, flags=re.MULTILINE | re.DOTALL | re.IGNORECASE,
+    )
+
+
+def postprocess_mermaid(html: str) -> str:
+    def _replace(m: re.Match) -> str:
+        code = escape(unescape(m.group(1).strip()))
+        return f'<div class="mermaid">{code}</div>'
+    return re.sub(
+        r'<pre><code class="language-mermaid">(.*?)</code></pre>',
+        _replace, html, flags=re.DOTALL,
+    )
+
+
 def process_markdown(raw: str, filename: str = "") -> dict:
+    raw = re.sub(r'%%.*?%%', '', raw, flags=re.DOTALL)
+    raw = preprocess_containers(raw)
+    raw = re.sub(r'!\[\[([^\]]+)\]\]', _replace_embed, raw)
+    raw = re.sub(r'\[\[([^\]|#]+)(?:#([^\]|]*))?(?:\|([^\]]*))?\]\]', _replace_wikilink, raw)
+    raw = re.sub(r'^(\s*[-*+]) \[x\] ', r'\1 <input type="checkbox" checked> ', raw, flags=re.MULTILINE | re.IGNORECASE)
+    raw = re.sub(r'^(\s*[-*+]) \[ \] ', r'\1 <input type="checkbox"> ', raw, flags=re.MULTILINE)
+    raw = re.sub(r'==([^=\n]+)==', r'<mark>\1</mark>', raw)
+    raw = re.sub(r'~~([^~\n]+)~~', r'<del>\1</del>', raw)
+    raw = re.sub(r'\^([^^]+)\^', r'<sup>\1</sup>', raw)
+    raw = re.sub(r'~([^~\n]+)~', r'<sub>\1</sub>', raw)
     html = md_lib.markdown(
         raw,
-        extensions=["tables", "fenced_code", "toc", "nl2br"],
+        extensions=["tables", "fenced_code", "toc", "nl2br", "footnotes", "md_in_html"],
         extension_configs={
-            "fenced_code": {
-                "lang_prefix": "language-"
-            }
+            "fenced_code": {"lang_prefix": "language-"}
         }
     )
+    html = postprocess_callouts(html)
+    html = postprocess_mermaid(html)
     return {
         "html": html,
         "filename": filename,
@@ -597,7 +844,7 @@ def initialize_state() -> None:
         "panel_expanded": True,
         "raw_markdown": "",
         "filename": "",
-        "font_size": 100,
+        "font_size": 90,
         "last_uploaded_filename": "",
     }
     for key, value in defaults.items():
@@ -716,7 +963,11 @@ def render_stats(data: dict | None) -> None:
 def render_content(data: dict | None) -> None:
     if data:
         st.html(
-            f'<div class="reader-shell"><div class="md-content">{data["html"]}</div></div>',
+            f'<div class="reader-shell"><div class="md-content">{data["html"]}</div></div>'
+            '<script>MathJax={tex:{inlineMath:[["$","$"]],displayMath:[["$$","$$"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]}};</script>'
+            '<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>'
+            '<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>'
+            '<script>mermaid.initialize({startOnLoad:true,theme:"neutral"});</script>',
         )
         return
 
